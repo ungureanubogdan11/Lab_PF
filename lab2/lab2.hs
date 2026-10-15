@@ -126,3 +126,104 @@ binomial a 0 = 1
 binomial 0 b = 0
 binomial a b = 
     (binomial (a - 1) b) + (binomial (a - 1) (b - 1))
+
+
+sumN :: Integer -> Integer
+sumN 1 = 1
+sumN x = x + sumN (x - 1)
+
+putere :: Integer -> Integer -> Integer
+putere x 0 = 1
+putere x y =
+    x * putere x (y - 1)
+
+inmultire :: Integer -> Integer -> Integer
+inmultire 0 x = 0
+inmultire x 0 = 0
+inmultire x 1 = x
+inmultire x y =
+    x + inmultire x (y - 1)
+
+cifre :: Integer -> Integer
+cifre 0 = 0
+cifre x = 
+    mod x 10 + cifre (div x 10)
+
+nrcifre :: Integer -> Integer
+nrcifre x = 
+    if x < 10
+        then 1
+    else
+        1 + nrcifre (div x 10)
+
+prod_pare :: Integer -> Integer
+prod_pare x = 
+    if x < 10 && mod x 2 == 0
+        then x
+    else if x < 10 && mod x 2 == 1
+        then 1
+    else if mod x 2 == 0
+        then mod x 10 * prod_pare (div x 10)
+    else    
+        prod_pare(div x 10)
+
+oglindit :: Integer -> Integer
+oglindit x = 
+    if x < 10
+        then x
+    else 
+        (mod x 10) * (10 ^ (nrcifre x - 1)) + oglindit (div x 10)
+    
+
+aux :: Integer -> Integer -> Bool
+aux 1 x = True
+aux 2 x = False
+aux x y = 
+    if y > 1
+        then (mod x y == 0) || aux x (y - 1)
+    else 
+        False 
+
+prim :: Integer -> Bool
+prim x = not (aux x (x - 1))
+
+
+apcifra :: Integer -> Integer -> Integer
+apcifra x c = 
+    if x < 10 && x == c
+        then 1
+    else if x < 10 && x /= c
+        then 0
+    else if mod x 10 == c
+        then 1 + apcifra (div x 10) c
+    else 
+        apcifra (div x 10) c
+
+sterge_cifra :: Integer -> Integer -> Integer
+sterge_cifra 0 p = 0
+sterge_cifra x p =
+    if (nrcifre x) == p
+        then sterge_cifra (div x 10) p
+    else 
+        (sterge_cifra (div x 10) p) * 10 + mod x 10 
+
+
+
+sterge_cifra_x :: Integer -> Integer -> Integer
+sterge_cifra_x 0 p = 0
+sterge_cifra_x x c = 
+    if (mod x 10) == c
+        then sterge_cifra_x (div x 10) c
+    else
+        (sterge_cifra_x (div x 10) c) * 10 + mod x 10 
+
+
+ackermann :: Integer -> Integer -> Integer
+ackermann 0 n = n + 1
+ackermann m n = 
+    if m > 0 && n == 0
+        then ackermann (m - 1) 1
+    else if m > 0 && n > 0
+        then ackermann (m - 1) (ackermann m (n - 1))
+    else    
+        -1
